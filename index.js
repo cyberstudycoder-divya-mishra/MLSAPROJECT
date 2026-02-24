@@ -48,3 +48,65 @@ document.querySelector("#search").addEventListener(
         }
     }
 )
+/* ===== MOUSE PARALLAX ===== */
+document.addEventListener("mousemove", (e) => {
+    document.body.style.setProperty("--x", e.clientX + "px");
+    document.body.style.setProperty("--y", e.clientY + "px");
+
+    const moveX = (e.clientX / window.innerWidth - 0.5) * 40;
+    const moveY = (e.clientY / window.innerHeight - 0.5) * 40;
+
+    document.body.style.setProperty("--moveX", moveX + "px");
+    document.body.style.setProperty("--moveY", moveY + "px");
+
+    /* Neon Cursor Trail */
+    const trail = document.createElement("div");
+    trail.className = "cursor-trail";
+    trail.style.left = e.clientX + "px";
+    trail.style.top = e.clientY + "px";
+    document.body.appendChild(trail);
+
+    setTimeout(() => trail.remove(), 200);
+});
+
+/* ===== CREATE STAR LAYERS ===== */
+["star-layer1","star-layer2","star-layer3"].forEach(cls=>{
+    const layer = document.createElement("div");
+    layer.className = cls;
+    document.body.appendChild(layer);
+});
+
+/* ===== SHOOTING STARS + SOUND ===== */
+const shootSound = new Audio("https://www.soundjay.com/button/sounds/button-3.mp3");
+
+setInterval(() => {
+    const star = document.createElement("div");
+    star.className = "shooting-star";
+    star.style.top = Math.random() * window.innerHeight + "px";
+    star.style.left = Math.random() * window.innerWidth + "px";
+    document.body.appendChild(star);
+
+    shootSound.play();
+
+    setTimeout(() => star.remove(), 1500);
+}, 5000);
+
+/* ===== CLICK EXPLOSION PARTICLES ===== */
+document.addEventListener("click", (e) => {
+    for (let i = 0; i < 15; i++) {
+        const particle = document.createElement("div");
+        particle.className = "particle";
+        particle.style.left = e.clientX + "px";
+        particle.style.top = e.clientY + "px";
+
+        const dx = (Math.random() - 0.5) * 200 + "px";
+        const dy = (Math.random() - 0.5) * 200 + "px";
+
+        particle.style.setProperty("--dx", dx);
+        particle.style.setProperty("--dy", dy);
+
+        document.body.appendChild(particle);
+
+        setTimeout(() => particle.remove(), 800);
+    }
+});
