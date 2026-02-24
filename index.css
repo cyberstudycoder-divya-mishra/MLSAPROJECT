@@ -1,67 +1,197 @@
-*{
-    margin: 0px;
-    padding: 0px;
+/* ================= RESET ================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
-#main-div{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    font-style: italic;
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-}
-#main-h1{
-    font-weight: 600;
-}
-#search{
-    width: 40vw;
-    border-radius: 10px;
-    height: 40px;
-    font-size: large;
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    padding: 10px;
-    margin: 10px;
-}
-#movie-box{
-    width: 90vw;
-    height: auto;
-    background-color: white;
-    border-radius: 10px;
-    padding: 10px;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 20px;
-}
-.box{
-    height: 40vh;
-    width: 30vw;
-    border: 2px solid black;
-    border-radius: 10px;
+
+/* ================= NETFLIX RED THEME ================= */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: radial-gradient(circle at center, #1a0000 0%, #000000 70%);
+    color: white;
+    overflow-x: hidden;
     position: relative;
 }
-img{
-    height: 40vh;
-    border-radius: 10px;
-    width: 30vw;
-    transform: scale(1);
-    transition: all 0.1s ease;
-    object-fit:cover;
+
+/* Red cinematic glow */
+body::after {
+    content: "";
+    position: fixed;
+    width: 900px;
+    height: 900px;
+    background: radial-gradient(circle, rgba(255,0,0,0.15), transparent 70%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    filter: blur(150px);
+    z-index: -3;
 }
-.overlay{
-    position: absolute;
-    opacity: 0;
-    transform: translateY(100px);
-    /* transition: property duration timing-function; */
-    transition: all 0.8s ease;
-    bottom: 0px;
-    padding: 12px;
-    background: rgba(0, 0.6, 0.6, 0.6);
+
+/* ================= STAR LAYERS ================= */
+.star-layer1,
+.star-layer2,
+.star-layer3 {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: -2;
+}
+
+.star-layer1 {
+    background-image: radial-gradient(red 1px, transparent 1px);
+    background-size: 50px 50px;
+    opacity: 0.4;
+    transform: translate(var(--moveX,0), var(--moveY,0));
+}
+
+.star-layer2 {
+    background-image: radial-gradient(rgba(255,0,0,0.7) 2px, transparent 2px);
+    background-size: 120px 120px;
+    opacity: 0.3;
+    transform: translate(calc(var(--moveX,0) * 0.5), calc(var(--moveY,0) * 0.5));
+}
+
+.star-layer3 {
+    background-image: radial-gradient(rgba(255,0,0,0.5) 3px, transparent 3px);
+    background-size: 200px 200px;
+    opacity: 0.2;
+    transform: translate(calc(var(--moveX,0) * 0.2), calc(var(--moveY,0) * 0.2));
+}
+
+/* ================= SPOTLIGHT ================= */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(
+        circle 300px at var(--x,50%) var(--y,50%),
+        rgba(255,0,0,0.2),
+        transparent 80%
+    );
+    z-index: -1;
+}
+
+/* ================= SHOOTING STAR ================= */
+.shooting-star {
+    position: fixed;
+    width: 3px;
+    height: 120px;
+    background: linear-gradient(-45deg, red, transparent);
+    animation: shoot 1.5s linear forwards;
+    z-index: -1;
+}
+
+@keyframes shoot {
+    from {
+        transform: translate(0,0) rotate(45deg);
+        opacity: 1;
+    }
+    to {
+        transform: translate(-700px,700px) rotate(45deg);
+        opacity: 0;
+    }
+}
+
+/* ================= MOVIE CARDS ================= */
+#main-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+}
+
+#main-h1 {
+    font-size: 3rem;
+    margin-bottom: 30px;
+    text-shadow: 0 0 20px red;
+}
+
+#search {
+    width: 50%;
+    max-width: 500px;
+    height: 45px;
+    border-radius: 30px;
+    border: none;
+    padding: 0 20px;
+    background: rgba(255,0,0,0.1);
     color: white;
+    border: 1px solid rgba(255,0,0,0.4);
+    margin-bottom: 40px;
 }
-.box:hover .overlay{
-    opacity: 1;
+
+#movie-box {
+    width: 90%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
+    gap: 30px;
+}
+
+.box {
+    position: relative;
+    overflow: hidden;
+    border-radius: 15px;
+    transition: 0.3s;
+    box-shadow: 0 0 20px rgba(255,0,0,0.3);
+}
+
+.box:hover {
+    transform: translateY(-10px) scale(1.05);
+    box-shadow: 0 0 40px red;
+}
+
+.box img {
+    width: 100%;
+    height: 350px;
+    object-fit: cover;
+    transition: 0.5s;
+}
+
+.box:hover img {
+    transform: scale(1.1);
+}
+
+.overlay {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 20px;
+    background: linear-gradient(to top, rgba(0,0,0,0.95), transparent);
+    transform: translateY(100%);
+    transition: 0.4s;
+}
+
+.box:hover .overlay {
     transform: translateY(0);
 }
-.box:hover img{
-     transform: scale(1.08);
+
+/* ================= PARTICLES ================= */
+.particle {
+    position: fixed;
+    width: 6px;
+    height: 6px;
+    background: red;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: explode 0.8s linear forwards;
+}
+
+@keyframes explode {
+    to {
+        transform: translate(var(--dx), var(--dy));
+        opacity: 0;
+    }
+}
+
+/* ================= NEON CURSOR ================= */
+.cursor-trail {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    background: red;
+    border-radius: 50%;
+    pointer-events: none;
+    box-shadow: 0 0 15px red, 0 0 30px red;
+    opacity: 0.7;
 }
